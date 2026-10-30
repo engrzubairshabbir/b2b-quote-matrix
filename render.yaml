@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: b2b-quote-matrix
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npx prisma generate && npx prisma db push --accept-data-loss && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        value: postgresql://neondb_owner:npg_cUWKFw4qAZb0@ep-fancy-lake-b79jfp93-pooler.c-13.us-east-1.aws.neon.tech/neondb?sslmode=require
+      - key: SHOPIFY_API_KEY
+        value: 2f1ac13301ae7a03bd804a6b36e2c73e
+      - key: SHOPIFY_APP_URL
+        value: https://b2bquotes.consultways.com
+      - key: SCOPES
+        value: read_customers,read_draft_orders,read_products,write_customers,write_draft_orders,write_products
