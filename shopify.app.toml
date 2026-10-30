@@ -2,7 +2,7 @@
 client_id = "2f1ac13301ae7a03bd804a6b36e2c73e"
 name = "B2B Quote & Bulk Discounts"
 handle = "b2b-quote-bulk-discounts"
-application_url = "https://shopify.dev/apps/default-app-home"
+application_url = "https://b2bquotes.consultways.com"
 embedded = true
 
 [build]
@@ -14,7 +14,7 @@ include_config_on_deploy = true
 scopes = "read_customers,read_draft_orders,read_products,write_customers,write_draft_orders,write_products"
 
 [auth]
-redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+redirect_urls = [ "https://b2bquotes.consultways.com/api/auth" ]
 
 [webhooks]
 api_version = "2024-10"
