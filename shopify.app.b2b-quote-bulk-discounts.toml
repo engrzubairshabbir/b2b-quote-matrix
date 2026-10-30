@@ -13,7 +13,11 @@ api_version = "2027-01"
 scopes = "read_customers,read_draft_orders,read_products,write_customers,write_draft_orders,write_products"
 
 [auth]
-redirect_urls = [ "https://b2bquotes.consultways.com/api/auth" ]
+redirect_urls = [
+  "https://b2bquotes.consultways.com/auth/callback",
+  "https://b2bquotes.consultways.com/auth/shopify/callback",
+  "https://b2bquotes.consultways.com/api/auth"
+]
 
 [build]
 automatically_update_urls_on_dev = true
