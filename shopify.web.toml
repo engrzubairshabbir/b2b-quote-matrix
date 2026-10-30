@@ -1,0 +1,4 @@
+type = "frontend"
+
+[commands]
+dev = "node ./node_modules/@remix-run/dev/dist/cli.js vite:dev --port 3000"

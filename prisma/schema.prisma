@@ -1,0 +1,91 @@
+// Prisma schema for ConsultWays B2B Quote & Tiered Matrix Pro
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+}
+
+model AppConfig {
+  id                    String   @id @default(uuid())
+  shop                  String   @unique
+  enableTieredMatrix    Boolean  @default(true)
+  primaryColor          String   @default("#00E5FF") // Neon Cyan
+  buttonText            String   @default("Request B2B Bulk Quote")
+  requireCompany        Boolean  @default(true)
+  requireTaxId          Boolean  @default(false)
+  autoApproveDiscounts  Boolean  @default(false)
+  notificationEmail     String?  @default("b2b-sales@consultways.com")
+  activePlan            String   @default("PRO_SCALE") // STARTER or PRO_SCALE
+  subscriptionId        String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model TieredDiscountRule {
+  id              String   @id @default(uuid())
+  shop            String
+  minQuantity     Int
+  maxQuantity     Int?
+  discountPercent Float
+  label           String   // e.g. "Wholesale Tier 1: 15% OFF"
+  badgeText       String?  // e.g. "Standard", "Popular", "Best Value"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([shop, minQuantity])
+}
+
+model QuoteRequest {
+  id                  String   @id @default(uuid())
+  shop                String
+  quoteNumber         String   // Format: CW-Q1001
+  customerName        String
+  customerEmail       String
+  companyName         String?
+  phone               String?
+  taxId               String?
+  notes               String?
+  shippingAddress     String?
+  targetDeliveryDate  String?
+  productId           String
+  productTitle        String
+  productHandle       String?
+  productImage        String?
+  variantId           String
+  variantTitle        String?
+  unitPrice           Float
+  quantity            Int
+  appliedDiscount     Float    // e.g. 15.0 for 15%
+  totalAmount         Float
+  status              String   @default("PENDING") // PENDING, APPROVED, INVOICE_SENT, REJECTED
+  shopifyDraftOrderId String?
+  invoiceUrl          String?
+  internalNotes       String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([shop, status])
+  @@index([quoteNumber])
+}

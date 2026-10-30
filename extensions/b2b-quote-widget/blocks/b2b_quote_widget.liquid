@@ -1,0 +1,197 @@
+{% comment %}
+  ConsultWays B2B Quote & Tiered Matrix Pro - Product Page Widget Block
+  Shopify Online Store 2.0 Standard
+{% endcomment %}
+
+{{ 'b2b-quote-widget.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="cw-b2b-widget-wrapper"
+  data-shop="{{ shop.permanent_domain }}"
+  data-app-url=""
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-handle="{{ product.handle }}"
+  data-product-image="{{ product.featured_image | image_url: width: 400 }}"
+  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  data-variant-title="{{ product.selected_or_first_available_variant.title | escape }}"
+  data-unit-price="{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}"
+>
+  {% if block.settings.enable_tiered_matrix %}
+    <!-- Volume Tier Pricing Header & Table -->
+    <div class="cw-b2b-tiers-header">
+      <div class="cw-b2b-tiers-title">
+        <span>⚡</span>
+        <span>{{ block.settings.matrix_title | default: "B2B Volume Wholesale Tiers" }}</span>
+      </div>
+      <span class="cw-b2b-tiers-badge">Auto Bulk Discounts</span>
+    </div>
+
+    <!-- Volume Tier Cards (Rendered & Calculated dynamically via JS) -->
+    <div class="cw-b2b-cards-grid">
+      <!-- Fallback / Static SSR cards for immediate rendering -->
+      <div class="cw-tier-card" data-min-qty="1">
+        <div class="cw-tier-qty">1 - 9 Units</div>
+        <div class="cw-tier-price">{{ product.selected_or_first_available_variant.price | money }}</div>
+        <div class="cw-tier-unit">per item</div>
+        <div class="cw-tier-discount" style="background:#f1f5f9;color:#64748b">Standard</div>
+      </div>
+
+      <div class="cw-tier-card" data-min-qty="10">
+        <div class="cw-tier-qty">10 - 49 Units</div>
+        <div class="cw-tier-price">{{ product.selected_or_first_available_variant.price | times: 0.85 | money }}</div>
+        <div class="cw-tier-unit">per item</div>
+        <div class="cw-tier-discount">15% OFF</div>
+      </div>
+
+      <div class="cw-tier-card cw-best-value" data-min-qty="50">
+        <span class="cw-tier-badge">Best Value</span>
+        <div class="cw-tier-qty">50+ Units</div>
+        <div class="cw-tier-price">{{ product.selected_or_first_available_variant.price | times: 0.75 | money }}</div>
+        <div class="cw-tier-unit">per item</div>
+        <div class="cw-tier-discount">25% OFF</div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Primary CTA Button: Request B2B Bulk Quote -->
+  <button type="button" class="cw-quote-cta-btn" id="cw-open-quote-modal-btn">
+    <span class="cw-cta-neon-dot"></span>
+    <span>{{ block.settings.button_text | default: "Request B2B Bulk Quote" }}</span>
+  </button>
+</div>
+
+<!-- Glassmorphic Quote Modal & Live Calculator -->
+<div class="cw-modal-backdrop" id="cw-b2b-modal">
+  <div class="cw-modal-container">
+    <!-- Modal Header -->
+    <div class="cw-modal-header">
+      <div class="cw-modal-header-left">
+        <div class="cw-modal-header-icon">CW</div>
+        <div>
+          <h2 class="cw-modal-title">Request B2B Commercial Bulk Quote</h2>
+          <p class="cw-modal-subtitle">{{ product.title | escape }}</p>
+        </div>
+      </div>
+      <button type="button" class="cw-modal-close-btn" aria-label="Close modal">&times;</button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="cw-modal-body">
+      <!-- Form Container -->
+      <div class="cw-form-container">
+        <!-- Live Quantity & Price Calculator -->
+        <div class="cw-calc-card">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#CBD5E1">Select Target Order Quantity</div>
+            <div class="cw-calc-qty-control">
+              <button type="button" class="cw-calc-btn" id="cw-calc-btn-minus">-</button>
+              <input type="number" id="cw-calc-qty-input" class="cw-calc-input" value="15" min="1" />
+              <button type="button" class="cw-calc-btn" id="cw-calc-btn-plus">+</button>
+              <span style="font-size:12px;color:#94A3B8;margin-left:6px">Units</span>
+            </div>
+            <div id="cw-calc-savings" class="cw-calc-savings">★ 15% OFF Tier applied</div>
+          </div>
+
+          <div class="cw-calc-totals">
+            <div class="cw-calc-total-label">Estimated Subtotal</div>
+            <div id="cw-calc-total-price" class="cw-calc-total-price">$0.00</div>
+            <div style="font-size:11px;color:#64748B">Excl. freight & local taxes</div>
+          </div>
+        </div>
+
+        <!-- B2B Quote Information Form -->
+        <form id="cw-b2b-quote-form" style="margin-top:20px">
+          <div class="cw-form-grid">
+            <div>
+              <label class="cw-form-label">Full Name *</label>
+              <input type="text" name="customerName" class="cw-form-input" required placeholder="e.g. Sarah Jenkins" />
+            </div>
+
+            <div>
+              <label class="cw-form-label">Corporate Work Email *</label>
+              <input type="email" name="customerEmail" class="cw-form-input" required placeholder="sjenkins@enterprise.com" />
+            </div>
+
+            <div>
+              <label class="cw-form-label">Company / Organization *</label>
+              <input type="text" name="companyName" class="cw-form-input" required placeholder="e.g. Vanguard Logistics Ltd" />
+            </div>
+
+            <div>
+              <label class="cw-form-label">Direct Phone</label>
+              <input type="tel" name="phone" class="cw-form-input" placeholder="+1 (555) 000-0000" />
+            </div>
+
+            <div>
+              <label class="cw-form-label">Shipping Postal / Zip Code</label>
+              <input type="text" name="shippingAddress" class="cw-form-input" placeholder="e.g. 60607 or M17 1TN" />
+            </div>
+
+            <div>
+              <label class="cw-form-label">Target Delivery Date</label>
+              <input type="date" name="targetDeliveryDate" class="cw-form-input" />
+            </div>
+
+            <div class="cw-form-full">
+              <label class="cw-form-label">Project Requirements / Custom Specifications</label>
+              <textarea name="notes" class="cw-form-textarea" rows="2" placeholder="Specify dock access, liftgate requirement, delivery hours, or special finishes..."></textarea>
+            </div>
+          </div>
+
+          <div class="cw-modal-footer" style="padding:16px 0 0 0;margin-top:16px">
+            <button type="submit" class="cw-btn-submit-quote">
+              <span>⚡</span> Submit Bulk Quote Request
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success Confirmation State (Hidden initially) -->
+      <div class="cw-success-container" style="display:none">
+        <div class="cw-success-icon">✓</div>
+        <h3 class="cw-success-title">Quote Request Received!</h3>
+        <div class="cw-success-quote-no">Quote #CW-Q1001</div>
+        <p class="cw-success-desc">
+          Thank you for your bulk inquiry. Our B2B commercial sales desk has received your request and will review wholesale pricing, freight options, and dispatch an official 1-click Shopify Draft Order invoice within 2 hours.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'b2b-quote-widget.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "B2B Volume & Quote Modal",
+  "target": "section",
+  "templates": ["product"],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_tiered_matrix",
+      "label": "Show Volume Tier Breakdown Table",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "matrix_title",
+      "label": "Volume Table Title",
+      "default": "B2B Volume Wholesale Tiers"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "CTA Button Text",
+      "default": "Request B2B Bulk Quote"
+    },
+    {
+      "type": "color",
+      "id": "primary_accent",
+      "label": "Neon Accent Color",
+      "default": "#00E5FF"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+node_modules/
+.env
+*.log
+build/
+.cache/
+.shopify/
+*.sqlite
+*.sqlite-journal
+.DS_Store

@@ -1,0 +1,46 @@
+{
+  "name": "consultways-b2b-quote-matrix-pro",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node ./node_modules/@remix-run/dev/dist/cli.js vite:build",
+    "dev": "node ./node_modules/@shopify/cli/bin/run.js app dev",
+    "dev:local": "node ./node_modules/@remix-run/dev/dist/cli.js vite:dev --port 3000",
+    "start": "node ./node_modules/@remix-run/serve/dist/cli.js ./build/server/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:seed": "node prisma/seed.js",
+    "setup": "prisma generate && prisma db push && node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.2.0",
+    "@remix-run/node": "^2.16.0",
+    "@remix-run/react": "^2.16.0",
+    "@remix-run/serve": "^2.16.0",
+    "@shopify/app-bridge-react": "^4.1.6",
+    "@shopify/polaris": "^13.9.5",
+    "@shopify/polaris-icons": "^9.3.1",
+    "@shopify/shopify-app-remix": "^3.8.0",
+    "@shopify/shopify-app-session-storage-prisma": "^11.0.1",
+    "isbot": "^5.1.28",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^2.16.0",
+    "@shopify/cli": "^4.9.4",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "prisma": "^6.2.0",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.14",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

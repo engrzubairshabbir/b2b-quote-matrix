@@ -1,0 +1,16 @@
+{
+  "name": "B2B Bulk Quote & Tiered Matrix",
+  "button_text": "Request B2B Bulk Quote",
+  "modal_title": "B2B Volume Quote Calculator",
+  "modal_subtitle": "Instant wholesale pricing & custom freight quote",
+  "name_label": "Full Name",
+  "email_label": "Work Email",
+  "company_label": "Company / Enterprise Name",
+  "zip_label": "Shipping Postal / Zip Code",
+  "delivery_label": "Target Delivery Date",
+  "notes_label": "Custom Requirements / Project Specs",
+  "submit_button": "Submit Bulk Quote Request",
+  "submitting": "Submitting Inquiry...",
+  "success_title": "Quote Request Submitted!",
+  "success_message": "Our B2B commercial sales desk will review your quote within 2 hours."
+}
