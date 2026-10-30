@@ -23,6 +23,11 @@ redirect_urls = [
 [webhooks]
 api_version = "2024-10"
 
+[webhooks.privacy_compliance]
+customer_data_request_url = "https://b2bquotes.consultways.com/webhooks"
+customer_deletion_url = "https://b2bquotes.consultways.com/webhooks"
+shop_deletion_url = "https://b2bquotes.consultways.com/webhooks"
+
 [pos]
 embedded = false
 
