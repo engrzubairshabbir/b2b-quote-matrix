@@ -33,6 +33,8 @@ export default function App() {
       <head>
         <Meta />
         <Links />
+        <meta name="shopify-api-key" content="2f1ac13301ae7a03bd804a6b36e2c73e" />
+        <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
         <style>{`
           :root {
             --cw-neon-cyan: #00E5FF;
